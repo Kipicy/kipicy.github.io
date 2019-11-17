@@ -18,5 +18,5 @@ xmlhttp.onreadystatechange=function()
         }
     }
 }
-xmlhttp.open("GET","http://suiltapico.github.io/data/news.log",true);
+xmlhttp.open("GET","https://suiltapico.github.io/data/news.log",true);
 xmlhttp.send();
