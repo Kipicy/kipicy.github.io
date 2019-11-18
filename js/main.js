@@ -30,7 +30,8 @@ function qs(a){
 //更新页面模块
     function loadPage(url){
         data.xhrGet(url,function(xmlhttp){
-            console.log(xmlhttp.split("\n",1))
+            console.log(xmlhttp)
+            console.log(String(xmlhttp).split("\n",1))
         })
     }
 //解析url模块
