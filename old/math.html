@@ -10,7 +10,8 @@
             border-collapse:collapse
         }
         #twoNTwoList td{
-            border: 1px solid #666
+            border: 1px solid #666;
+            min-width: 50px
         }
     </style>
 </head>
@@ -50,7 +51,7 @@
             a b c d
         </p>
         <input type="text" name="twoNTwoListParamrter" id="twoNTwoListParamrter">
-        <p>k<sub>0</sub>=</p>
+        <p>K<sup>2</sup>=<span id="twoNTwoListCorrelationCoefficientComputationProcess">?</span>=<span id="twoNTwoListCorrelationCoefficientResult">?</span></p>
         
     <section>
             <h2></h2>
@@ -58,7 +59,8 @@
     <script>
         var d=document;
         function qs(id){return d.querySelector("#"+id)}
-        var reb,rea,remidx,remidy,recc
+        var reb,rea,remidx,remidy,recc,tntcc
+
         qs("regressionEquationParameter").oninput=function(){
             var repara=qs("regressionEquationParameter").value.split("\n")
             var xarr=[],yarr=[],xsum=0,ysum=0,bnmtsum=0,bdmtsum=0,reccnmtsum=0,reccdmtsum=0
@@ -142,12 +144,16 @@
         qs("twoNTwoListParamrter").oninput=function(){
             var tntpara=qs("twoNTwoListParamrter").value.split(" ")
             for(let i=0;i<tntpara.length;i++){if(!tntpara[i]){tntpara.splice(i,1);i--}}
-            var a,b,c,d
+            var a,b,c,d,tntdmt
             if(tntpara.length>=4){
                 a=parseFloat(tntpara[0]),b=parseFloat(tntpara[1]),c=parseFloat(tntpara[2]),d=parseFloat(tntpara[3])
                 qs("tnta").innerHTML=a;qs("tntb").innerHTML=b;qs("tntc").innerHTML=c;qs("tntd").innerHTML=d
                 qs("tntanb").innerHTML=a+b;qs("tntcnd").innerHTML=c+d;qs("tntanc").innerHTML=a+c;qs("tntbnd").innerHTML=b+d
                 qs("tntanbncnd").innerHTML=a+b+c+d;
+                
+                tntcc=((a+b+c+d)*((a*d-b*c)**2))/((a+b)*(c+d)*(a+c)*(b+d))
+                qs("twoNTwoListCorrelationCoefficientComputationProcess").innerHTML=(a+b+c+d)+"×"+((a*d-b*c)**2)+"÷"+((a+b)*(c+d)*(a+c)*(b+d))
+                qs("twoNTwoListCorrelationCoefficientResult").innerHTML=tntcc
             }
 
         }
