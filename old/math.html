@@ -1,1 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>数学</title>
+    <style>
+        #twoNTwoList{
+            border-collapse:collapse
+        }
+        #twoNTwoList td{
+            border: 1px solid #666
+        }
+    </style>
+</head>
+<body>
+    <section>
+        <h2>线性回归方程</h2>
+        <p>请按以下格式输入数据：(允许算式，如1+9,2*9,3**8)：</p>
+        <div>
+            x<sub>1</sub> x<sub>2</sub> x<sub>3</sub>  x<sub>4</sub>...<br>
+            y<sub>1</sub> y<sub>2</sub> y<sub>3</sub>  y<sub>4</sub>...
+        </div>
+        <textarea name="regressionEquationParameter" id="regressionEquationParameter" cols="30" rows="2"></textarea>
+        <p>
+            中点坐标: <span id="regressionEquationMidpoint">(?,?)</span> ,
+            <sup>^</sup>b: <span id="regressionEquationB1">?</span>,
+            <sup>^</sup>a: <span id="regressionEquationA1">?</span>,
+        </p>
+        <p>
+            相关系数R: <span id="regressionEquationCorrelationCoefficient">?</span>，
+            相关系数平方R<sup>2</sup>: <span id="regressionEquationCorrelationCoefficientPowered">?</span>
+        </p>
+        <p>
+            回归方程: y=<span id="regressionEquationB2">?</span>x<span id="regressionEquationA2">?</span><br>
+            x:<input type="number" name="regressionEquationX" id="regressionEquationX">,y:<input type="number" name="regressionEquationY" id="regressionEquationY">
+        </p>
 
+    </section>
+        <h2>2×2列联表</h2>
+        <table id="twoNTwoList">
+            <tr><td>/</td><td>?</td><td>?</td><td>&nbsp;</td></tr>
+            <tr><td>?</td><td id="tnta">a</td><td id="tntb">b</td><td id="tntanb">a+b</td></tr>
+            <tr><td>?</td><td id="tntc">c</td><td id="tntd">d</td><td id="tntcnd">c+d</td></tr>
+            <tr><td>&nbsp;</td><td id="tntanc">a+c</td><td id="tntbnd">b+d</td><td id="tntanbncnd">a+b+c+d</td></tr>
+        </table>
+        <p>
+            请以下格式按顺序输入a,b,c,d的值：(支持算式)<br>
+            a b c d
+        </p>
+        <input type="text" name="twoNTwoListParamrter" id="twoNTwoListParamrter">
+        <p>k<sub>0</sub>=</p>
+        
+    <section>
+            <h2></h2>
+    </section>
+    <script>
+        var d=document;
+        function qs(id){return d.querySelector("#"+id)}
+        var reb,rea,remidx,remidy,recc
+        qs("regressionEquationParameter").oninput=function(){
+            var repara=qs("regressionEquationParameter").value.split("\n")
+            var xarr=[],yarr=[],xsum=0,ysum=0,bnmtsum=0,bdmtsum=0,reccnmtsum=0,reccdmtsum=0
+            reb=undefined,rea=undefined,recc=undefined
+
+            xarr=repara[0].split(" ")
+            for(let i=0;i<xarr.length;i++){if(xarr[i]){xarr[i]=parseFloat(eval(xarr[i]));xsum+=xarr[i]}else{xarr.splice(i,1);i=i-1}}
+            remidx=xsum/xarr.length
+
+
+            if(repara.length>1){//如果y也输入了
+                yarr=repara[1].split(" ")
+                for(let i=0;i<yarr.length;i++){if(yarr[i]){yarr[i]=parseFloat(yarr[i]);ysum+=yarr[i]}else{yarr.splice(i,1);i=i-1}}
+                if(yarr.length==xarr.length){//并且xy的数据一一对应
+                    remidy=ysum/yarr.length
+
+                    //^b numerator sum
+                    for(let i=0,len=xarr.length;i<len;i++){bnmtsum+=xarr[i]*yarr[i]}
+                    bnmtsum-=xarr.length*remidx*remidy
+
+                    //^b denominator sum
+                    for(let i=0,len=xarr.length;i<len;i++){bdmtsum+=xarr[i]**2}
+                    bdmtsum-=xarr.length*remidx**2
+                    //^b
+                    reb=bnmtsum/bdmtsum
+                    //^a
+                    rea=remidy-reb*remidx
+
+                    //RECC numerator sum
+                    for(let i=0,len=xarr.length;i<len;i++){reccnmtsum+=(xarr[i]-remidx)*(yarr[i]-remidy)}
+                    //RECC denominator sum
+                    for(let i=0,len=xarr.length;i<len;i++){reccdmtsum+=((xarr[i]-remidx)**2)*(yarr[i]-remidy)**2}
+                    reccdmtsum=Math.pow(reccdmtsum,0.5)
+                    //RECC
+                    recc=reccnmtsum/reccdmtsum
+
+                    qs("regressionEquationB1").innerHTML=reb
+                    qs("regressionEquationB2").innerHTML=reb
+
+                    if(rea<0){
+                        qs("regressionEquationA1").innerHTML=rea
+                        qs("regressionEquationA2").innerHTML=rea
+                    }
+                    else{
+                        qs("regressionEquationA1").innerHTML="+"+String(rea)
+                        qs("regressionEquationA2").innerHTML="+"+String(rea)
+                    }
+
+                    qs("regressionEquationCorrelationCoefficient").innerHTML=recc
+                    qs("regressionEquationCorrelationCoefficientPowered").innerHTML=recc**2
+                }
+                else{
+                    qs("regressionEquationB1").innerHTML="?"
+                    qs("regressionEquationB2").innerHTML="?"
+                    qs("regressionEquationA1").innerHTML="?"
+                    qs("regressionEquationA2").innerHTML="?"
+                    qs("regressionEquationCorrelationCoefficient").innerHTML="?"
+                    qs("regressionEquationCorrelationCoefficientPowered").innerHTML="?"
+                }
+            }
+            //输出中点坐标
+            qs("regressionEquationMidpoint").innerHTML="("
+            remidx?qs("regressionEquationMidpoint").innerHTML+=remidx:qs("regressionEquationMidpoint").innerHTML+="?"
+            qs("regressionEquationMidpoint").innerHTML+=","
+            remidy?qs("regressionEquationMidpoint").innerHTML+=remidy:qs("regressionEquationMidpoint").innerHTML+="?"
+            qs("regressionEquationMidpoint").innerHTML+=")"
+
+        }
+        qs("regressionEquationX").oninput=function(){
+            if(reb||reb==0){
+                qs("regressionEquationY").value=reb*parseFloat(qs("regressionEquationX").value)+rea
+            }
+        }
+
+        qs("regressionEquationY").oninput=function(){
+            if(reb||reb==0){
+                qs("regressionEquationX").value=(parseFloat(qs("regressionEquationY").value)-rea)/reb
+            }
+        }
+
+        qs("twoNTwoListParamrter").oninput=function(){
+            var tntpara=qs("twoNTwoListParamrter").value.split(" ")
+            for(let i=0;i<tntpara.length;i++){if(!tntpara[i]){tntpara.splice(i,1);i--}}
+            var a,b,c,d
+            if(tntpara.length>=4){
+                a=parseFloat(tntpara[0]),b=parseFloat(tntpara[1]),c=parseFloat(tntpara[2]),d=parseFloat(tntpara[3])
+                qs("tnta").innerHTML=a;qs("tntb").innerHTML=b;qs("tntc").innerHTML=c;qs("tntd").innerHTML=d
+                qs("tntanb").innerHTML=a+b;qs("tntcnd").innerHTML=c+d;qs("tntanc").innerHTML=a+c;qs("tntbnd").innerHTML=b+d
+                qs("tntanbncnd").innerHTML=a+b+c+d;
+            }
+
+        }
+
+    </script>
+</body>
+</html>
