@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>数学</title>
+    <title>高中数学工具</title>
     <style>
         #twoNTwoList{
             border-collapse:collapse
@@ -13,9 +13,30 @@
             border: 1px solid #666;
             min-width: 50px
         }
+        #log{
+            font-size: 14px
+        }
+        a{
+            text-decoration-line:unset;
+            color: rgb(96, 155, 126)
+        }
+        a:focus,a:hover{
+            text-decoration-line:underline;
+            color: rgb(147, 168, 158)
+        }
     </style>
 </head>
 <body>
+    <h1>高中数学工具</h1>
+    <section>
+        <h2>两点距离</h2>
+        <p>请按以下格式输入数据：(允许算式，如1+9,2*9,3**8)：</p>
+        <div>
+            x<sub>1</sub> y<sub>1</sub> x<sub>2</sub> y<sub>2</sub>...
+        </div>
+        <input type="text" id="twoPointsDistanceParameter">距离：<span id="twoPointsDistance">?</span>
+    </section>
+
     <section>
         <h2>线性回归方程</h2>
         <p>请按以下格式输入数据：(允许算式，如1+9,2*9,3**8)：</p>
@@ -30,40 +51,61 @@
             <sup>^</sup>a: <span id="regressionEquationA1">?</span>,
         </p>
         <p>
-            相关系数R: <span id="regressionEquationCorrelationCoefficient">?</span>，
-            相关系数平方R<sup>2</sup>: <span id="regressionEquationCorrelationCoefficientPowered">?</span>
+            相关系数R=<span id="regressionEquationCorrelationCoefficientComputationProcess">?</span>=<span id="regressionEquationCorrelationCoefficientResult">?</span>，<br>
+            相关指数(相关系数平方)R<sup>2</sup>=<span id="regressionEquationCorrelationIndex">?</span>
         </p>
         <p>
-            回归方程: y=<span id="regressionEquationB2">?</span>x<span id="regressionEquationA2">?</span><br>
-            x:<input type="number" name="regressionEquationX" id="regressionEquationX">,y:<input type="number" name="regressionEquationY" id="regressionEquationY">
+            回归方程: y=<span id="regressionEquationB2">?</span>x<span id="regressionEquationA2">+?</span><br>
+            输入对应的x或y可直接求解，x:<input type="number" name="regressionEquationX" id="regressionEquationX">,y:<input type="number" name="regressionEquationY" id="regressionEquationY">
         </p>
-
     </section>
+
+    <section>
         <h2>2×2列联表</h2>
         <table id="twoNTwoList">
-            <tr><td>/</td><td>?</td><td>?</td><td>&nbsp;</td></tr>
+            <tr><td>/</td><td>?</td><td>?</td><td>总计</td></tr>
             <tr><td>?</td><td id="tnta">a</td><td id="tntb">b</td><td id="tntanb">a+b</td></tr>
             <tr><td>?</td><td id="tntc">c</td><td id="tntd">d</td><td id="tntcnd">c+d</td></tr>
-            <tr><td>&nbsp;</td><td id="tntanc">a+c</td><td id="tntbnd">b+d</td><td id="tntanbncnd">a+b+c+d</td></tr>
+            <tr><td>总计</td><td id="tntanc">a+c</td><td id="tntbnd">b+d</td><td id="tntanbncnd">a+b+c+d</td></tr>
         </table>
         <p>
             请以下格式按顺序输入a,b,c,d的值：(支持算式)<br>
             a b c d
         </p>
         <input type="text" name="twoNTwoListParamrter" id="twoNTwoListParamrter">
-        <p>K<sup>2</sup>=<span id="twoNTwoListCorrelationCoefficientComputationProcess">?</span>=<span id="twoNTwoListCorrelationCoefficientResult">?</span></p>
-        
-    <section>
-            <h2></h2>
+        <p>k<sub>0</sub>=<span id="twoNTwoListCorrelationCoefficientComputationProcess">?</span>=<span id="twoNTwoListCorrelationCoefficientResult">?</span></p>
     </section>
+
+        <br><br><br><br><br>
+
+    <section contenteditable="true" id="log">
+            <h5>更新日记：</h5>
+            <p>2.2019/12/28 21:00 修复了线性回归方程的相关系数算法错误的bug与2x2列联表输入框中算式无法使用的bug，修正了相关符号2x2列联表K<sup>2</sup>改为k<sub>0</sub>，加入了相关提示、相关系数计算过程与两点距离计算。</p>
+            <p>1.2019/12/17 19:06 创建此文档，定位是解决高中数学问题，加入线性回归方程的回归方程、相关系数计算与2x2列联表和相关系数的计算。</p>
+    </section>
+
+    <footer>
+        <small>Copyright © <a href="https://github.com/SuiltaPico/">Suilta Pico</a> 2019 <a href="https://github.com/SuiltaPico/suiltapico.github.io/issues/1">bug/建议提交</a></small>
+    </footer>
+
     <script>
         var d=document;
         function qs(id){return d.querySelector("#"+id)}
-        var reb,rea,remidx,remidy,recc,tntcc
+        var tpdd,reb,rea,remidx,remidy,recc,reci,tntcc
+
+        qs("twoPointsDistanceParameter").oninput=function(){
+            var tpdpara=qs("twoPointsDistanceParameter").value.split(" ")
+            for(let i=0;i<tpdpara.length;i++){if(!tpdpara[i]){tpdpara.splice(i,1);i--}}
+            if(tpdpara.length>=4){
+                x1=parseFloat(eval(tpdpara[0])),y1=parseFloat(eval(tpdpara[1])),x2=parseFloat(eval(tpdpara[2])),y2=parseFloat(eval(tpdpara[3]))
+                tpdd=Math.sqrt((x1-x2)**2+(y1-y2)**2)
+                qs("twoPointsDistance").innerHTML=tpdd+" 未开方为："+((x1-x2)**2+(y1-y2)**2)
+            }
+        }
 
         qs("regressionEquationParameter").oninput=function(){
             var repara=qs("regressionEquationParameter").value.split("\n")
-            var xarr=[],yarr=[],xsum=0,ysum=0,bnmtsum=0,bdmtsum=0,reccnmtsum=0,reccdmtsum=0
+            var xarr=[],yarr=[],xsum=0,ysum=0,bnmtsum=0,bdmtsum=0,reccnmtsum=0,reccdmtsum,reccdmtsum1=0,reccdmtsum2=0,recinmtsum=0,recidmtsum=0
             reb=undefined,rea=undefined,recc=undefined
 
             xarr=repara[0].split(" ")
@@ -92,10 +134,19 @@
                     //RECC numerator sum
                     for(let i=0,len=xarr.length;i<len;i++){reccnmtsum+=(xarr[i]-remidx)*(yarr[i]-remidy)}
                     //RECC denominator sum
-                    for(let i=0,len=xarr.length;i<len;i++){reccdmtsum+=((xarr[i]-remidx)**2)*(yarr[i]-remidy)**2}
-                    reccdmtsum=Math.pow(reccdmtsum,0.5)
+                    for(let i=0,len=xarr.length;i<len;i++){reccdmtsum1+=(xarr[i]-remidx)**2}
+                    for(let i=0,len=xarr.length;i<len;i++){reccdmtsum2+=(yarr[i]-remidy)**2}
+                    reccdmtsum=Math.sqrt(reccdmtsum1*reccdmtsum2)
+                    console.log(reccnmtsum,Math.sqrt(reccdmtsum1*reccdmtsum2))
                     //RECC
                     recc=reccnmtsum/reccdmtsum
+
+                    //RECI numerator sum
+                    for(let i=0,len=xarr.length;i<len;i++){recinmtsum+=(yarr[i]-reb*xarr[i]-rea)**2}
+                    //RECI denominator sum
+                    for(let i=0,len=xarr.length;i<len;i++){recidmtsum+=(yarr[i]-remidy)**2}
+                    //RECI
+                    reci=1-recinmtsum/recidmtsum
 
                     qs("regressionEquationB1").innerHTML=reb
                     qs("regressionEquationB2").innerHTML=reb
@@ -109,16 +160,18 @@
                         qs("regressionEquationA2").innerHTML="+"+String(rea)
                     }
 
-                    qs("regressionEquationCorrelationCoefficient").innerHTML=recc
-                    qs("regressionEquationCorrelationCoefficientPowered").innerHTML=recc**2
+                    qs("regressionEquationCorrelationCoefficientResult").innerHTML=recc
+                    qs("regressionEquationCorrelationCoefficientComputationProcess").innerHTML=reccnmtsum+"÷("+reccdmtsum1+"×"+reccdmtsum2+")<sup>0.5</sup>"
+                    qs("regressionEquationCorrelationIndex").innerHTML=recc**2+"="+reci
                 }
                 else{
                     qs("regressionEquationB1").innerHTML="?"
                     qs("regressionEquationB2").innerHTML="?"
                     qs("regressionEquationA1").innerHTML="?"
                     qs("regressionEquationA2").innerHTML="?"
-                    qs("regressionEquationCorrelationCoefficient").innerHTML="?"
-                    qs("regressionEquationCorrelationCoefficientPowered").innerHTML="?"
+                    qs("regressionEquationCorrelationCoefficientComputationProcess").innerHTML="?"
+                    qs("regressionEquationCorrelationCoefficientResult").innerHTML="?"
+                    qs("regressionEquationCorrelationIndex").innerHTML="?"
                 }
             }
             //输出中点坐标
@@ -146,7 +199,7 @@
             for(let i=0;i<tntpara.length;i++){if(!tntpara[i]){tntpara.splice(i,1);i--}}
             var a,b,c,d,tntdmt
             if(tntpara.length>=4){
-                a=parseFloat(tntpara[0]),b=parseFloat(tntpara[1]),c=parseFloat(tntpara[2]),d=parseFloat(tntpara[3])
+                a=parseFloat(eval(tntpara[0])),b=parseFloat(eval(tntpara[1])),c=parseFloat(eval(tntpara[2])),d=parseFloat(eval(tntpara[3]))
                 qs("tnta").innerHTML=a;qs("tntb").innerHTML=b;qs("tntc").innerHTML=c;qs("tntd").innerHTML=d
                 qs("tntanb").innerHTML=a+b;qs("tntcnd").innerHTML=c+d;qs("tntanc").innerHTML=a+c;qs("tntbnd").innerHTML=b+d
                 qs("tntanbncnd").innerHTML=a+b+c+d;
