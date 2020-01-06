@@ -6,100 +6,367 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>高中数学工具</title>
     <style>
-        #twoNTwoList{
-            border-collapse:collapse
+        *{-webkit-touch-callout: none;}
+        body{
+            margin: 0;
+            color:#34495e;
+            font-size: 16px
+            /*font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif*/
+        }
+        #intro p{
+            text-indent:16px
+        }
+        #intro td{
+            text-align: center
         }
         #twoNTwoList td{
-            border: 1px solid #666;
             min-width: 50px
         }
+
+        #FunctionImagePainter{
+            display: flex;
+            width: 100%
+        }
+        #FunctionImagePainter>div{
+            border: 1px solid #666;
+            min-width: 120px;
+            width: 40%
+        }
+        #FunctionImagePainter>canvas{
+            max-width: 60%;
+        }
         #log{
-            font-size: 14px
+            font-size: 14px;
+            height: 160px;
+            overflow-y: scroll;
+            border: .1px rgba(0, 119, 231, 0.56) solid;
+            margin: 4px 0;
+            outline: none;
+            padding: 4px 10px;
+            background-color: #fff
+        }
+        #log:focus{
+            border: .1px rgba(0, 119, 231, 0.71) solid;
+        }
+        #HypergeometricDistributionCalculation div.relative{
+            display: inline-block;
+        }
+        #HypergeometricDistributionCalculation sup{
+            position: absolute;top:0;left: 10px;
+        }
+
+        table{
+            background-color: #fff;
+            border-collapse:collapse;
+        }
+        td{
+            border: 1px solid #666;
+            min-width: 40px;
         }
         a{
             text-decoration-line:unset;
-            color: rgb(96, 155, 126)
+            color: rgb(75, 148, 113)
         }
         a:focus,a:hover{
             text-decoration-line:underline;
-            color: rgb(147, 168, 158)
+            color: rgb(28, 143, 87)
+        }
+        header{
+            text-align: center;
+        }
+        footer{
+            padding: 3px 0;
+            color: #fff;
+            background-color: #333;
+            transition: .2s background-color ease;
+            height: 24px;
+            text-align: center;
+            font-size: 15px
+        }
+        footer:hover{
+            background-color: rgb(0, 1, 49);
+        }
+        main{
+            padding: 2px 10px
+        }
+        section{
+            background-color: rgb(246, 246, 246);
+            padding: 10px 10px;
+            margin: 20px 5px;
+            border-radius: 4px;
+            box-shadow: 0 0 10px rgba(51, 51, 51, 0.356)
+        }
+        h1, h2, h3, h4, h5, h6 ,strong{
+            font-weight:600;
+            color: #2c3e50;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            padding: 15px 0;
+            margin: 0
+        }
+        code{
+            font-weight:100;
+            font-family: sans-serif;
+            color: #2973b7
+        }
+        b{
+            color:#42b983
+        }
+        sub,sup{
+            font-size: 11px
+        }
+        [disabled]{
+            color: #777
+        }
+        .ind{
+            padding: 0 16px;
+        }
+        .relative{
+            position: relative;
+        }
+        .collectionHead{
+            display: block;
+            background-color: rgba(51, 51, 51, 0.068);
+            padding: 4px 10px;
+            box-shadow: 0 1px 4px rgba(51, 51, 51, 0.562);
+            border-radius: 4px;
+        }
+        .collected{
+            height: 0 ;
+        }
+        .collectable{
+            transition: 1s height ease;
+            overflow-y: hidden;
         }
     </style>
+    <script>
+        var xxx=0
+    </script>
 </head>
 <body>
-    <h1>高中数学工具</h1>
-    <section>
-        <h2>两点距离</h2>
-        <p>请按以下格式输入数据：(允许算式，如1+9,2*9,3**8)：</p>
-        <div>
-            x<sub>1</sub> y<sub>1</sub> x<sub>2</sub> y<sub>2</sub>...
-        </div>
-        <input type="text" id="twoPointsDistanceParameter">距离：<span id="twoPointsDistance">?</span>
-    </section>
+    <header class="k-ripple" k-ripple="color:#000,initialRadius:10,speed:9,acceleration:0.2," onclick="xxx++;if(xxx==20)this.innerHTML='嘿，别玩了，快去学习啦！';" style="font-size: 18px;">
+        <h1>高中数学工具</h1>
+    </header>
+    <main>
+        <section id="intro">
+            <h2>使用手册</h2>
+            <h3>我该怎么使用？</h3>
+            <p>
+                很简单，只需要每个按着每个输入框上面给的提示，按格式输入数据(一般是用空格隔开，回车分行)即可得到结果，结果是随着输入数据而<strong>实时更新</strong>的，不需要按什么提交按钮。
+            </p>
+            <h3 id="introAdvancedTitle" class="collectionHead k-ripple" k-ripple="color:#000,initialRadius:10,speed:9,acceleration:0.2,">进阶</h3>
+            <div class="ind collectable collected" id="introAdvancedContect" class="">
+                <h3>我该怎么表达算式呢？</h3>
+                <p>
+                    在这里，有许多算式表达方式与数学标准的有所不同，甚至有些是自己定制的，所以符号、常量和函数的表达需要<strong>了解一下</strong>：<small>（虽然我感觉一般用不上）</small>
+                </p>
+                <div class="ind">
+                    <h4>符号</h4>
+                    <table>
+                        <tr>
+                            <td>符号名称</td><td>加</td><td>减</td><td><strong>乘</strong></td><td><strong>除</strong></td><td><strong>乘法</strong></td><td><strong>取余</strong></td>
+                        </tr>
+                        <tr>
+                            <td>符号</td><td>+</td><td>-</td><td>*</td><td>/</td><td>**</td><td>%</td>
+                        </tr>
+                    </table>
+                    <h4>常量\函数</h4>
+                    <table>
+                        <tr>
+                            <td>常量\函数名称</td><td>π</td><td>e</td><td>正弦函数</td><td>余弦函数</td><td>正切函数</td><td>角度化孤度</td><td>排列</td><td>组合</td><td>阶乘</td>
+                        </tr>
+                        <tr>
+                            <td>表达</td><td>p</td><td>e</td><td>sin()</td><td>cos()</td><td>tan()</td><td>d()</td><td>稍后更新</td><td>稍后更新</td><td>稍后更新</td>
+                        </tr>
+                    </table>
+                    <h4>注意事项</h4>
+                    <p>
+                        <ul>
+                            <li>函数必须有括号，例如<code>sin(3.14)</code>，切勿写成<code>sin 3.14</code></li>
+                            <li>多个函数内含或者算式的多个括号内含，不分大括号中括号，全部都必须是小括号，如<code>(sin(d(30*2))+0.2)*3</code></li>
+                            <li>三角函数输入值使用的是弧度制，可以通过<b>角度化孤度函数</b>转化，不能输入角度符号来表示角度。<small>(因为你也难找到这个符号)</small></li>
+                        </ul>
+                    </p>
+                </div>
+                <h3>关于保留小数的问题</h3>
+                <p>
+                    由于<b>JavaScript</b>计算浮点数(即小数)不精准的特性，当遇到浮点数运算，经常结果会出现一些不精准的问题，一般加减不要指望结果中小数点15位后开始的数字的精准性，<br>
+                    而乘除开方平方后也是从小数点15位后开始不精准，小数相乘除的次数越多，精准度就越低，所以遇到求相关系数什么的问题就精准到三位数就好了，
+                    还有，比如<code>sin(π)</code>时就会出现<code>1.2246467991473532e-16</code>的奇怪小数，其实也是计算机算法的问题，保留几位小数一般就看不到这样的问题了。
+                    <strong>简而言之</strong>，保留小数的设置我已经设计好了，没什么要求一般不要动就好了√。
+                </p>
+            </div>
+        </section>
 
-    <section>
-        <h2>线性回归方程</h2>
-        <p>请按以下格式输入数据：(允许算式，如1+9,2*9,3**8)：</p>
-        <div>
-            x<sub>1</sub> x<sub>2</sub> x<sub>3</sub>  x<sub>4</sub>...<br>
-            y<sub>1</sub> y<sub>2</sub> y<sub>3</sub>  y<sub>4</sub>...
-        </div>
-        <textarea name="regressionEquationParameter" id="regressionEquationParameter" cols="30" rows="2"></textarea>
-        <p>
-            中点坐标: <span id="regressionEquationMidpoint">(?,?)</span> ,
-            <sup>^</sup>b: <span id="regressionEquationB1">?</span>,
-            <sup>^</sup>a: <span id="regressionEquationA1">?</span>,
-        </p>
-        <p>
-            相关系数R=<span id="regressionEquationCorrelationCoefficientComputationProcess">?</span>=<span id="regressionEquationCorrelationCoefficientResult">?</span>，<br>
-            相关指数(相关系数平方)R<sup>2</sup>=<span id="regressionEquationCorrelationIndex">?</span>
-        </p>
-        <p>
-            回归方程: y=<span id="regressionEquationB2">?</span>x<span id="regressionEquationA2">+?</span><br>
-            输入对应的x或y可直接求解，x:<input type="number" name="regressionEquationX" id="regressionEquationX">,y:<input type="number" name="regressionEquationY" id="regressionEquationY">
-        </p>
-    </section>
+        <section>
+            <h2>全局设置</h2>
+            <p>结果输出时保留几位小数：<input type="number" id="KeepDecimalsOnOutput" value="3"> 位<br>
+                运算时保留几位小数：<input type="number" id="KeepDecimalsOnCalculate" value="14" disabled> 位 <small>被怀疑有破坏精准性的嫌疑，已禁用。</small></p>
+        </section>
 
-    <section>
-        <h2>2×2列联表</h2>
-        <table id="twoNTwoList">
-            <tr><td>/</td><td>?</td><td>?</td><td>总计</td></tr>
-            <tr><td>?</td><td id="tnta">a</td><td id="tntb">b</td><td id="tntanb">a+b</td></tr>
-            <tr><td>?</td><td id="tntc">c</td><td id="tntd">d</td><td id="tntcnd">c+d</td></tr>
-            <tr><td>总计</td><td id="tntanc">a+c</td><td id="tntbnd">b+d</td><td id="tntanbncnd">a+b+c+d</td></tr>
-        </table>
-        <p>
-            请以下格式按顺序输入a,b,c,d的值：(支持算式)<br>
-            a b c d
-        </p>
-        <input type="text" name="twoNTwoListParamrter" id="twoNTwoListParamrter">
-        <p>k<sub>0</sub>=<span id="twoNTwoListCorrelationCoefficientComputationProcess">?</span>=<span id="twoNTwoListCorrelationCoefficientResult">?</span></p>
-    </section>
+        <section>
+            <h2>两点距离</h2>
+            <p>请按以下格式输入数据：</p>
+            <code>
+                x<sub>1</sub> y<sub>1</sub> x<sub>2</sub> y<sub>2</sub>...
+            </code>
+            <br>
+            <input type="text" id="twoPointsDistanceParameter"><br>
+            距离：<span id="twoPointsDistance">?</span><br>
+            中点坐标：<span id="twoPointsMidpoint">(?,?)</span> 斜率：<span id="twoPointsK">?</span><br>
+            <div disabled>以两点连线为直径的圆的方程：<span id="twoPointsDiameterCircle" >?</span></div>
+        </section>
 
-        <br><br><br><br><br>
+        <section style="display: none">
+            <h2>超几何分布</h2>
+            <p>请按以下格式输入数据：</p>
+            <code>
+                总数(M) 次品数(N) 样品数(n)
+            </code><br>
+            <input type="text" name="HypergeometricDistributionParameter" id="HypergeometricDistributionParameter"><br>
+            X~H()
+            <div id="HypergeometricDistributionCalculation">
+                P(X=k)=<div class="relative">C<sub>M</sub><sup>k</sup></div><div class="relative">C<sub>N-M</sub><sup>n-k</sup></div>/<div class="relative">C<sub>N</sub><sup>n</sup></div>
+            </div>
+            分布列：
+            <table id="">
 
-    <section contenteditable="true" id="log">
-            <h5>更新日记：</h5>
-            <p>2.2019/12/28 21:00 修复了线性回归方程的相关系数算法错误的bug与2x2列联表输入框中算式无法使用的bug，修正了相关符号2x2列联表K<sup>2</sup>改为k<sub>0</sub>，加入了相关提示、相关系数计算过程与两点距离计算。</p>
-            <p>1.2019/12/17 19:06 创建此文档，定位是解决高中数学问题，加入线性回归方程的回归方程、相关系数计算与2x2列联表和相关系数的计算。</p>
-    </section>
+            </table>
+            <br>
+            E(X)=?,D(X)=?
+            
+        </section>
 
+        <section style="display: none">
+            <h2>二项分布</h2>
+
+        </section>
+
+        <section>
+            <h2>线性回归方程</h2>
+            <p>请按以下格式输入数据：</p>
+            <code>
+                x<sub>1</sub> x<sub>2</sub> x<sub>3</sub>  x<sub>4</sub>...<br>
+                y<sub>1</sub> y<sub>2</sub> y<sub>3</sub>  y<sub>4</sub>...
+            </code><br>
+            <textarea name="regressionEquationParameter" id="regressionEquationParameter" cols="30" rows="2"></textarea>
+            <p>
+                中点坐标: <span id="regressionEquationMidpoint">(?,?)</span> ,
+                <sup>^</sup>b: <span id="regressionEquationB1">?</span>,
+                <sup>^</sup>a: <span id="regressionEquationA1">?</span>,
+            </p>
+            <p>
+                相关系数R=<span id="regressionEquationCorrelationCoefficientComputationProcess">?</span>=<span id="regressionEquationCorrelationCoefficientResult">?</span>，<br>
+                相关指数(相关系数平方)R<sup>2</sup>=<span id="regressionEquationCorrelationIndex">?</span>
+            </p>
+            <p>
+                回归方程: y=<span id="regressionEquationB2">?</span>x<span id="regressionEquationA2">+?</span><br>
+                输入对应的x或y可直接求解，<br>
+                x:<input type="text" name="regressionEquationX" id="regressionEquationX">,<br>
+                y:<input type="text" name="regressionEquationY" id="regressionEquationY">
+            </p>
+        </section>
+
+        <section>
+            <h2>2×2列联表</h2>
+            <table id="twoNTwoList">
+                <tr><td>/</td><td>?</td><td>?</td><td>总计</td></tr>
+                <tr><td>?</td><td id="tnta">a</td><td id="tntb">b</td><td id="tntanb">a+b</td></tr>
+                <tr><td>?</td><td id="tntc">c</td><td id="tntd">d</td><td id="tntcnd">c+d</td></tr>
+                <tr><td>总计</td><td id="tntanc">a+c</td><td id="tntbnd">b+d</td><td id="tntanbncnd">a+b+c+d</td></tr>
+            </table>
+            <p>
+                请按以下格式按顺序输入a,b,c,d的值：(支持算式)<br>
+                <code>a b c d</code>
+            </p>
+            <input type="text" name="twoNTwoListParamrter" id="twoNTwoListParamrter">
+            <p>k<sub>0</sub>=<span id="twoNTwoListCorrelationCoefficientComputationProcess">?</span>=<span id="twoNTwoListCorrelationCoefficientResult">?</span></p>
+        </section>
+
+        <section style="display: none">
+            <h2>函数图像绘画</h2>
+            <div id="FunctionImagePainter">
+                <div>
+                    <h4>参数区</h4>
+                    <p>
+                        请请按以下格式按顺序输入函数:(<a href="javascript:;" id="javascriptMathStandard">遵循JavaScript的标准</a>)<br>
+                        x**2+x+2<br>
+                        2*Math.sin(x)
+                    </p>
+                </div>
+                <canvas></canvas>
+            </div>
+        </section>
+
+        <section>
+            <h3>更新日记：</h3>
+            <div  contenteditable="true" id="log">
+                <p>4.2020/1/6 22:31 更新了界面样式，增加了一些动画效果(ripple)和一些脚本函数，支持了两点求斜率和求中点，为下一次更新做了准备</p>
+                <p>3.2020/1/5 12:32 更新了界面样式，介绍模块的部分教程</p>
+                <p>2.2019/12/28 21:00 修复了线性回归方程的相关系数算法错误的bug与2x2列联表输入框中算式无法使用的bug，修正了相关符号2x2列联表K<sup>2</sup>改为k<sub>0</sub>，加入了相关提示、相关系数计算过程与两点距离计算。</p>
+                <p>1.2019/12/17 19:06 创建此文档，定位是解决高中数学问题，加入线性回归方程的回归方程、相关系数计算与2x2列联表和相关系数的计算。</p>
+            </div>
+        </section>
+    </main>
     <footer>
-        <small>Copyright © <a href="https://github.com/SuiltaPico/">Suilta Pico</a> 2019 <a href="https://github.com/SuiltaPico/suiltapico.github.io/issues/1">bug/建议提交</a></small>
+        <small>Copyright © <a href="https://github.com/SuiltaPico/">Suilta Pico</a> 2020 <a href="https://github.com/SuiltaPico/suiltapico.github.io/issues/1">bug/建议提交</a></small>
     </footer>
 
     <script>
         var d=document;
         function qs(id){return d.querySelector("#"+id)}
-        var tpdd,reb,rea,remidx,remidy,recc,reci,tntcc
+        var kdoo=qs("KeepDecimalsOnOutput").value
+            ,kdoc=qs("KeepDecimalsOnCalculate").value
+            ,tpdd,tpmidx,tpmidy,tpk,reb,rea,remidx,remidy,recc,reci,tntcc
+
+        function evalp(s){
+            return parseFloat(eval("var p=Math.PI,e=Math.E,sin=Math.sin,cos=Math.cos,tan=Math.tan;var d=function(r){return r/180*p};"+s))
+        }
+
+        function removeClass(element,classname){
+            var cnarr=element.className.split(" ")
+            var newclassname=""
+            for(let i=0;i<cnarr.length;i++){
+                if(cnarr[i]==classname||cnarr[i]==" "||!cnarr[i]){cnarr.splice(i,1);i=i-1}
+                else newclassname+=cnarr[i]+" "
+            }
+            element.className=newclassname
+        }
+
+        function haveClass(element,classname){
+            return element.className.split(" ").indexOf(classname)>-1?!0:!1
+        }
+
+        qs("KeepDecimalsOnOutput").oninput=function(){
+            kdoo=qs("KeepDecimalsOnOutput").value
+        }
+
+        qs("KeepDecimalsOnCalculate").oninput=function(){
+            kdoc=qs("KeepDecimalsOnCalculate").value
+        }
+
+        qs("introAdvancedTitle").onclick=function(){
+            haveClass(qs("introAdvancedContect"),"collected")?removeClass(qs("introAdvancedContect"),"collected"):qs("introAdvancedContect").className+=" collected"
+        }
+
 
         qs("twoPointsDistanceParameter").oninput=function(){
             var tpdpara=qs("twoPointsDistanceParameter").value.split(" ")
             for(let i=0;i<tpdpara.length;i++){if(!tpdpara[i]){tpdpara.splice(i,1);i--}}
             if(tpdpara.length>=4){
-                x1=parseFloat(eval(tpdpara[0])),y1=parseFloat(eval(tpdpara[1])),x2=parseFloat(eval(tpdpara[2])),y2=parseFloat(eval(tpdpara[3]))
+                var x1=evalp(tpdpara[0]),y1=evalp(tpdpara[1]),x2=evalp(tpdpara[2]),y2=evalp(tpdpara[3])
                 tpdd=Math.sqrt((x1-x2)**2+(y1-y2)**2)
-                qs("twoPointsDistance").innerHTML=tpdd+" 未开方为："+((x1-x2)**2+(y1-y2)**2)
+                tpmidx=(x1+x2)/2;tpmidy=(y1+y2)/2
+                tpk=(y1-y2)/(x1-x2)
+                qs("twoPointsDistance").innerHTML=tpdd.toFixed(kdoo)+" 未开方为："+((x1-x2)**2+(y1-y2)**2).toFixed(kdoo)
+                qs("twoPointsMidpoint").innerHTML="("
+                tpmidx?qs("twoPointsMidpoint").innerHTML+=tpmidx.toFixed(kdoo):qs("twoPointsMidpoint").innerHTML+="?"
+                qs("twoPointsMidpoint").innerHTML+=","
+                tpmidy?qs("twoPointsMidpoint").innerHTML+=tpmidy.toFixed(kdoo):qs("twoPointsMidpoint").innerHTML+="?"
+                qs("twoPointsMidpoint").innerHTML+=")"
+                qs("twoPointsK").innerHTML=tpk.toFixed(kdoo)
+                tpmidx==0?qs("twoPointsDiameterCircle").innerHTML+="(":0
+                qs("twoPointsDiameterCircle").innerHTML+="x"
             }
         }
 
@@ -109,13 +376,13 @@
             reb=undefined,rea=undefined,recc=undefined
 
             xarr=repara[0].split(" ")
-            for(let i=0;i<xarr.length;i++){if(xarr[i]){xarr[i]=parseFloat(eval(xarr[i]));xsum+=xarr[i]}else{xarr.splice(i,1);i=i-1}}
+            for(let i=0;i<xarr.length;i++){if(xarr[i]){xarr[i]=evalp(xarr[i]);xsum+=xarr[i]}else{xarr.splice(i,1);i=i-1}}
             remidx=xsum/xarr.length
 
 
             if(repara.length>1){//如果y也输入了
                 yarr=repara[1].split(" ")
-                for(let i=0;i<yarr.length;i++){if(yarr[i]){yarr[i]=parseFloat(yarr[i]);ysum+=yarr[i]}else{yarr.splice(i,1);i=i-1}}
+                for(let i=0;i<yarr.length;i++){if(yarr[i]){yarr[i]=evalp(yarr[i]);ysum+=yarr[i]}else{yarr.splice(i,1);i=i-1}}
                 if(yarr.length==xarr.length){//并且xy的数据一一对应
                     remidy=ysum/yarr.length
 
@@ -148,21 +415,21 @@
                     //RECI
                     reci=1-recinmtsum/recidmtsum
 
-                    qs("regressionEquationB1").innerHTML=reb
-                    qs("regressionEquationB2").innerHTML=reb
+                    qs("regressionEquationB1").innerHTML=reb.toFixed(kdoo)
+                    qs("regressionEquationB2").innerHTML=reb.toFixed(kdoo)
 
                     if(rea<0){
-                        qs("regressionEquationA1").innerHTML=rea
-                        qs("regressionEquationA2").innerHTML=rea
+                        qs("regressionEquationA1").innerHTML=rea.toFixed(kdoo)
+                        qs("regressionEquationA2").innerHTML=rea.toFixed(kdoo)
                     }
                     else{
-                        qs("regressionEquationA1").innerHTML="+"+String(rea)
-                        qs("regressionEquationA2").innerHTML="+"+String(rea)
+                        qs("regressionEquationA1").innerHTML="+"+String(rea.toFixed(kdoo))
+                        qs("regressionEquationA2").innerHTML="+"+String(rea.toFixed(kdoo))
                     }
 
-                    qs("regressionEquationCorrelationCoefficientResult").innerHTML=recc
-                    qs("regressionEquationCorrelationCoefficientComputationProcess").innerHTML=reccnmtsum+"÷("+reccdmtsum1+"×"+reccdmtsum2+")<sup>0.5</sup>"
-                    qs("regressionEquationCorrelationIndex").innerHTML=recc**2+"="+reci
+                    qs("regressionEquationCorrelationCoefficientResult").innerHTML=(recc).toFixed(kdoo)
+                    qs("regressionEquationCorrelationCoefficientComputationProcess").innerHTML=reccnmtsum.toFixed(kdoo)+"÷("+reccdmtsum1.toFixed(kdoo)+"×"+reccdmtsum2.toFixed(kdoo)+")<sup>0.5</sup>"
+                    qs("regressionEquationCorrelationIndex").innerHTML=(recc**2).toFixed(kdoo)+"="+reci.toFixed(kdoo)
                 }
                 else{
                     qs("regressionEquationB1").innerHTML="?"
@@ -176,21 +443,21 @@
             }
             //输出中点坐标
             qs("regressionEquationMidpoint").innerHTML="("
-            remidx?qs("regressionEquationMidpoint").innerHTML+=remidx:qs("regressionEquationMidpoint").innerHTML+="?"
+            remidx?qs("regressionEquationMidpoint").innerHTML+=remidx.toFixed(kdoo):qs("regressionEquationMidpoint").innerHTML+="?"
             qs("regressionEquationMidpoint").innerHTML+=","
-            remidy?qs("regressionEquationMidpoint").innerHTML+=remidy:qs("regressionEquationMidpoint").innerHTML+="?"
+            remidy?qs("regressionEquationMidpoint").innerHTML+=remidy.toFixed(kdoo):qs("regressionEquationMidpoint").innerHTML+="?"
             qs("regressionEquationMidpoint").innerHTML+=")"
 
         }
         qs("regressionEquationX").oninput=function(){
             if(reb||reb==0){
-                qs("regressionEquationY").value=reb*parseFloat(qs("regressionEquationX").value)+rea
+                qs("regressionEquationY").value=(reb*parseFloat(qs("regressionEquationX").value)+rea).toFixed(kdoo)
             }
         }
 
         qs("regressionEquationY").oninput=function(){
             if(reb||reb==0){
-                qs("regressionEquationX").value=(parseFloat(qs("regressionEquationY").value)-rea)/reb
+                qs("regressionEquationX").value=((parseFloat(qs("regressionEquationY").value)-rea)/reb).toFixed(kdoo)
             }
         }
 
@@ -199,18 +466,21 @@
             for(let i=0;i<tntpara.length;i++){if(!tntpara[i]){tntpara.splice(i,1);i--}}
             var a,b,c,d,tntdmt
             if(tntpara.length>=4){
-                a=parseFloat(eval(tntpara[0])),b=parseFloat(eval(tntpara[1])),c=parseFloat(eval(tntpara[2])),d=parseFloat(eval(tntpara[3]))
+                a=parseFloat(evalp(tntpara[0])),b=parseFloat(evalp(tntpara[1])),c=parseFloat(evalp(tntpara[2])),d=parseFloat(evalp(tntpara[3]))
                 qs("tnta").innerHTML=a;qs("tntb").innerHTML=b;qs("tntc").innerHTML=c;qs("tntd").innerHTML=d
                 qs("tntanb").innerHTML=a+b;qs("tntcnd").innerHTML=c+d;qs("tntanc").innerHTML=a+c;qs("tntbnd").innerHTML=b+d
                 qs("tntanbncnd").innerHTML=a+b+c+d;
                 
                 tntcc=((a+b+c+d)*((a*d-b*c)**2))/((a+b)*(c+d)*(a+c)*(b+d))
                 qs("twoNTwoListCorrelationCoefficientComputationProcess").innerHTML=(a+b+c+d)+"×"+((a*d-b*c)**2)+"÷"+((a+b)*(c+d)*(a+c)*(b+d))
-                qs("twoNTwoListCorrelationCoefficientResult").innerHTML=tntcc
+                qs("twoNTwoListCorrelationCoefficientResult").innerHTML=tntcc.toFixed(kdoo)
             }
 
         }
-
+    </script>
+    <script src="k-ripple.min.js"></script>
+    <script>
+        $k.ripple.updata()
     </script>
 </body>
 </html>
