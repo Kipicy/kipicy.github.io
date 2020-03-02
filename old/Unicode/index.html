@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Unicode</title>
+    <style>
+        header{
+            position: fixed;
+            background: #fff;
+            top: 0;left: 0;
+            width: 100%;
+            height: auto;
+            padding: 5px;
+            box-shadow: 0 2px 5px rgba(22, 22, 22, 0.397);
+        }
+        #blank{
+            height: 60px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <section>
+            <label for="form">从：</label><input type="number" id="form" value="0"><br>
+            <label for="to">到：</label><input type="number" id="to" value="2000">
+            <button id="generate">生成</button>
+            <button id="next">下一页</button>
+            <input type="checkbox" id="withSerialNumber" checked><label for="withSerialNumber">带序号</label>
+        </section>
+    </header>
+    <div id="blank"></div>
+    <main>
+        <section>
+            <div id="output">
+
+            </div>
+        </section>
+    </main>
+    <script>
+        var d=document;
+        function qs(s){return d.querySelector("#"+s)}
+        qs("generate").onclick=function(){
+            var str=""
+                ,form=parseInt(qs("form").value)
+                ,to=parseInt(qs("to").value)
+                ,wsn=qs("withSerialNumber").checked
+
+            if(wsn){
+                while(form<=to){
+                    str+=" "+form+":"+String.fromCharCode(form)
+                    form++
+                }
+            }
+            else{
+                while(form<=to){
+                    str+=" "+String.fromCharCode(form)
+                    form++
+                }
+            }
+
+            qs("output").innerHTML=str
+        }
+        qs("next").onclick=function(){
+            diff=parseInt(qs("to").value)-parseInt(qs("form").value)
+            qs("form").value=parseInt(qs("form").value)+diff
+            qs("to").value=parseInt(qs("to").value)+diff
+            qs("generate").onclick()
+        }
+    </script>
+</body>
+</html>
